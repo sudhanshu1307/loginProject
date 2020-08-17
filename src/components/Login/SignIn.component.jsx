@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
 import { Container, TextField, Button, Typography } from '@material-ui/core';
 import { Redirect } from 'react-router-dom';
+import { connect } from 'react-redux';
+
 import axios from 'axios';
 import './SignIn.style.css';
 
 
-export default class SignIn extends Component {
+class SignIn extends Component {
     constructor(props) {
         super(props)
         const token = localStorage.getItem("token")
@@ -24,7 +26,7 @@ export default class SignIn extends Component {
 
     onChange = (e) => {
         this.setState({
-            [e.target.name]: e.target.value
+            [e.target.name]: e.target.value  
         })
     }
 
@@ -95,3 +97,22 @@ export default class SignIn extends Component {
         )
     }
 }
+
+const mapStateToProps = state => {
+    return {
+        email: state.email,
+        password: state.password,
+        loggin: state.loggedIn
+    };
+};
+
+const mapDispatchToProps = dispatch => {
+    return {
+        onChange: () => dispatch({type: 'CHANGE'}),
+        onSubmit: () => dispatch({type: 'SUBMIT'})
+    };
+};
+
+// export default connect(mapStateToProps, mapDispatchToProps)(SignIn)
+
+export default SignIn

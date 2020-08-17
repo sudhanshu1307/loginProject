@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Link, Redirect } from 'react-router-dom';
+import axios from 'axios';
 import './admin.style.css';
 
 export default class admin extends Component {
@@ -13,9 +14,20 @@ export default class admin extends Component {
         }
 
         this.state = {
-            loggedIn
+            loggedIn,
+            usersData: []
         }
     }
+
+    componentDidMount() {
+        axios.get('https://reqres.in/api/login')
+            .then(res => {
+            const users = res.data.data;
+            this.setState({ usersData: users });
+            })
+        }
+
+
     render() {
         if(this.state.loggedIn === false){
             return <Redirect to="/" />
@@ -31,8 +43,29 @@ export default class admin extends Component {
                     </ul>
                 </nav>
                 <h1 className="heading">Welcome, User</h1>
-                <div className='card-container'>
-                    <img src={`http://t13.deviantart.net/SxdwD4sD5IjXwx0AgCBQ9xXOBqQ=/300x200/filters:fixed_height(100,100):origin()/pre01/d87e/th/pre/i/2012/207/c/1/coucher_de_soleil_02_by_b_melodie-d58n2yg.jpg`} alt='Image' />    
+                <div>
+                    <table className="user">
+                        <thead>
+                            <tr>
+                                <th>Id</th>
+                                <th>Name</th>
+                                <th>Year</th>
+                                <th>Color</th>
+                                <th>pantone_value</th>   
+                            </tr>
+                        </thead>
+                        {this.state.usersData.map(x => (
+                        <tbody>
+                            <tr>
+                                <td>{x.id}</td>
+                                <td>{x.name}</td>
+                                <td>{x.year}</td>
+                                <td>{x.color}</td>
+                                <td>{x.pantone_value}</td>
+                            </tr>
+                        </tbody>
+                    ))}
+                    </table>
                 </div>
             </div>
         )
