@@ -1,30 +1,23 @@
 import React, { useEffect } from 'react'
-import { Link } from 'react-router-dom';
 import { connect } from 'react-redux'
-import { fetchUsers } from './../../redux'
+import { fetchUsers } from '../../redux'   
 
-function admin({ userData, fetchUsers }) {
+function userContainer({ userData, fetchUsers }) {
+    console.log("userData",userData)
+    console.log("user", fetchUsers)
     // eslint-disable-next-line react-hooks/rules-of-hooks
     useEffect(() => {
         fetchUsers()
-    }, [])
+    }, [fetchUsers])
     return userData.loading ? (
         <h2>Loading</h2>
     ) : userData.error ? (
     <h2>{ userData.error }</h2>
     ) : (
         <div>
-             <nav>
-                    <label className="logo">My Logo</label>
-                    <ul>
-                        <li className="link"><Link to="#">Home</Link></li>
-                        <li className="link"><Link to="#">About</Link></li>
-                        <li className="link"><Link to="/logout">Logout</Link></li>
-                    </ul>
-                </nav>
             <h2>User List</h2>
             <div>
-            <table className="user">
+            <table>
                 <thead>
                     <tr>
                         <th>Id</th>
@@ -54,7 +47,7 @@ function admin({ userData, fetchUsers }) {
 
 const mapStateToProps = state => {
     return {
-        userData: state.user
+        userData: state.users
     }
 }
 
@@ -64,4 +57,4 @@ const mapDispatchToProps = dispatch => {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(admin)
+export default connect(mapStateToProps, mapDispatchToProps)(userContainer)
